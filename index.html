@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KierAlign - Sequence Alignment Visualization</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="terminal-container">
+        <!-- Landing Page -->
+        <div id="landing-page" class="page active">
+            <div id="floating-numbers"></div>
+            <button id="enter-chamber" class="glow-button">[ENTER ALIGNMENT CHAMBER]</button>
+        </div>
+
+        <!-- Input Interface -->
+        <div id="input-page" class="page">
+            <div class="terminal-header">
+                <h1>KierAlign Terminal</h1>
+                <div class="terminal-controls">
+                    <span class="control-dot red"></span>
+                    <span class="control-dot yellow"></span>
+                    <span class="control-dot green"></span>
+                </div>
+            </div>
+            
+            <div class="input-form">
+                <div class="input-group">
+                    <label for="sequenceA">Sequence A:</label>
+                    <input type="text" id="sequenceA" class="terminal-input" placeholder="e.g., ACGTTGCA">
+                </div>
+                <div class="input-group">
+                    <label for="sequenceB">Sequence B:</label>
+                    <input type="text" id="sequenceB" class="terminal-input" placeholder="e.g., ACTTGGA">
+                </div>
+                <div class="input-group">
+                    <label for="matchScore">Match Score:</label>
+                    <input type="number" id="matchScore" class="terminal-input" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="mismatchScore">Mismatch Score:</label>
+                    <input type="number" id="mismatchScore" class="terminal-input" value="-1">
+                </div>
+                <div class="input-group">
+                    <label for="gapScore">Gap Score:</label>
+                    <input type="number" id="gapScore" class="terminal-input" value="-2">
+                </div>
+                <button id="align-sequences" class="glow-button">[ALIGN SEQUENCES]</button>
+            </div>
+        </div>
+
+        <!-- Visualization Interface -->
+        <div id="visualization-page" class="page">
+            <div class="terminal-header">
+                <h1>Alignment Matrix</h1>
+                <div class="terminal-controls">
+                    <span class="control-dot red"></span>
+                    <span class="control-dot yellow"></span>
+                    <span class="control-dot green"></span>
+                </div>
+            </div>
+            <div id="matrix-container"></div>
+            <div id="alignment-result"></div>
+            <button id="reset-terminal" class="glow-button">[RESET TERMINAL]</button>
+        </div>
+    </div>
+
+    <script src="js/landing.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/needleman-wunsch.js"></script>
+</body>
+</html> 
