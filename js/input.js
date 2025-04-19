@@ -16,11 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (!/^[ACGT]+$/.test(sequenceA) || !/^[ACGT]+$/.test(sequenceB)) {
-            alert('Sequences can only contain A, C, G, or T');
-            return;
-        }
-
         // Store the input values
         window.alignmentData = {
             sequenceA,
@@ -60,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('input-page').classList.add('active');
     });
 
-    // Add input validation
+    // Add input formatting (just uppercase conversion)
     const sequenceInputs = document.querySelectorAll('#sequenceA, #sequenceB');
     sequenceInputs.forEach(input => {
         input.addEventListener('input', (e) => {
-            e.target.value = e.target.value.toUpperCase().replace(/[^ACGT]/g, '');
+            e.target.value = e.target.value.toUpperCase();
         });
     });
 }); 

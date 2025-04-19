@@ -16,8 +16,8 @@ KierAlign is an interactive, web-based educational visualization tool designed t
 1. Open `index.html` in your web browser
 2. On the landing page, click the "[ENTER ALIGNMENT CHAMBER]" button
 3. Enter your sequences and scoring parameters:
-   - Sequence A: First biological sequence (DNA only, A/C/G/T)
-   - Sequence B: Second biological sequence (DNA only, A/C/G/T)
+   - Sequence A: First biological sequence (e.g, A/C/G/T)
+   - Sequence B: Second biological sequence (e.g, A/C/G/T)
    - Match Score: Score for matching characters (default: +1)
    - Mismatch Score: Penalty for mismatches (default: -1)
    - Gap Score: Penalty for gaps (default: -2)
