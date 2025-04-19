@@ -2,13 +2,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const floatingNumbers = d3.select('#floating-numbers');
     const enterButton = document.getElementById('enter-chamber');
     
-    // Create floating numbers
-    const numbers = Array.from({length: 30}, () => ({
-        value: Math.random() > 0.5 ? 
-            Math.floor(Math.random() * 4) : 
-            -Math.floor(Math.random() * 4),
-        radius: 20
-    }));
+    // Get screen dimensions
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const buttonArea = enterButton.getBoundingClientRect();
+    
+    // Create columns for each number type (-6 to 6)
+    const numberTypes = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
+    const columnWidth = width / numberTypes.length;
+    
+    // Create numbers for each column
+    const numbers = [];
+    numberTypes.forEach((value, columnIndex) => {
+        const numInColumn = Math.floor(height / 60); // More dense spacing
+        for (let i = 0; i < numInColumn; i++) {
+            const yPos = i * 60 + Math.random() * 20;
+            if (!(yPos > buttonArea.top - 50 && yPos < buttonArea.bottom + 50 &&
+                  columnWidth * columnIndex > buttonArea.left - 50 && 
+                  columnWidth * columnIndex < buttonArea.right + 50)) {
+                numbers.push({
+                    value: value,
+                    x: columnWidth * columnIndex + columnWidth/2,
+                    y: yPos,
+                    columnIndex: columnIndex
+                });
+            }
+        }
+    });
 
     // Create SVG container
     const svg = floatingNumbers
@@ -16,37 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .attr('width', '100%')
         .attr('height', '100%');
 
-    // Create number elements
-    const numberElements = svg.selectAll('g')
-        .data(numbers)
-        .enter()
-        .append('g')
-        .attr('class', 'number-group');
-
-    // Add glowing circle backgrounds
-    numberElements.append('circle')
-        .attr('r', d => d.radius)
-        .attr('fill', d => d.value >= 0 ? '#6AD2A0' : '#F3AE49')
-        .attr('opacity', 0.2)
-        .attr('filter', 'url(#glow)');
-
-    // Add number text
-    numberElements.append('text')
-        .text(d => d.value)
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('fill', d => d.value >= 0 ? '#6AD2A0' : '#F3AE49')
-        .style('font-family', 'IBM Plex Mono')
-        .style('font-size', '24px')
-        .style('opacity', 0.7);
-
     // Add glow filter
     const defs = svg.append('defs');
     const filter = defs.append('filter')
         .attr('id', 'glow');
 
     filter.append('feGaussianBlur')
-        .attr('stdDeviation', '3')
+        .attr('stdDeviation', '2')
         .attr('result', 'coloredBlur');
 
     const feMerge = filter.append('feMerge');
@@ -55,62 +51,84 @@ document.addEventListener('DOMContentLoaded', () => {
     feMerge.append('feMergeNode')
         .attr('in', 'SourceGraphic');
 
-    // Set up force simulation
-    const simulation = d3.forceSimulation(numbers)
-        .force('charge', d3.forceManyBody().strength(50))
-        .force('collide', d3.forceCollide().radius(d => d.radius * 2).strength(0.8))
-        .force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
-        .force('bounds', () => {
-            for (let node of numbers) {
-                if (node.x < node.radius) node.x = node.radius;
-                if (node.x > window.innerWidth - node.radius) node.x = window.innerWidth - node.radius;
-                if (node.y < node.radius) node.y = node.radius;
-                if (node.y > window.innerHeight - node.radius) node.y = window.innerHeight - node.radius;
+    // Create number elements
+    const numberElements = svg.selectAll('text')
+        .data(numbers)
+        .enter()
+        .append('text')
+        .text(d => d.value)
+        .attr('x', d => d.x)
+        .attr('y', d => d.y)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'middle')
+        .attr('fill', d => {
+            // Create a gradient of colors from red (-6) through amber (0) to green (+6)
+            if (d.value < 0) {
+                return d3.interpolateRgb('#F3AE49', '#ff4444')(Math.abs(d.value) / 6);
+            } else if (d.value > 0) {
+                return d3.interpolateRgb('#F3AE49', '#6AD2A0')(d.value / 6);
             }
+            return '#F3AE49'; // 0 remains amber
         })
-        .on('tick', () => {
-            numberElements.attr('transform', d => `translate(${d.x},${d.y})`);
-        });
+        .style('font-family', 'IBM Plex Mono')
+        .style('font-size', '24px')
+        .style('opacity', 0.7)
+        .style('filter', 'url(#glow)')
+        .style('cursor', 'pointer') // Add pointer cursor on hover
+        .style('transition', 'transform 0.2s ease, opacity 0.2s ease');
+        //.style('z-index', '1000');;
 
-    // Add hover effects
-    numberElements
-        .on('mouseover', function(event, d) {
-            const group = d3.select(this);
-            group.select('circle')
-                .transition()
-                .duration(200)
-                .attr('r', d.radius * 1.5)
-                .attr('opacity', 0.4);
-            
-            group.select('text')
-                .transition()
-                .duration(200)
-                .style('font-size', '32px')
-                .style('opacity', 1);
+    // Add hover effects with CSS transforms
+    numberElements.each(function() {
+        const element = d3.select(this);
+        element
+            .on('mouseover', function() {
+                d3.select(this)
+                    .style('transform', 'scale(1.5)')
+                    .style('opacity', 1);
+                console.log('hover');
+            })
+            //.on('mouseover', function() { console.log('hover') })
+            .on('mouseout', function() {
+                d3.select(this)
+                    .style('transform', 'scale(1)')
+                    .style('opacity', 0.7);
+            });
+    });
 
-            // Add velocity on hover
-            d.vx = (Math.random() - 0.5) * 5;
-            d.vy = (Math.random() - 0.5) * 5;
-        })
-        .on('mouseout', function(event, d) {
-            const group = d3.select(this);
-            group.select('circle')
-                .transition()
-                .duration(200)
-                .attr('r', d.radius)
-                .attr('opacity', 0.2);
-            
-            group.select('text')
-                .transition()
-                .duration(200)
-                .style('font-size', '24px')
-                .style('opacity', 0.7);
-        });
+    // Animation function
+    function animate() {
+        numberElements
+            .attr('y', function(d) {
+                d.y += 0.2; // Adjust speed of falling
+                if (d.y > height) {
+                    d.y = -30;
+                }
+                // Avoid button area
+                if (d.y > buttonArea.top - 50 && d.y < buttonArea.bottom + 50 &&
+                    d.x > buttonArea.left - 50 && d.x < buttonArea.right + 50) {
+                    d.y = buttonArea.bottom + 50;
+                }
+                return d.y;
+            });
+
+        requestAnimationFrame(animate);
+    }
+
+    // Start animation
+    animate();
 
     // Handle window resize
     window.addEventListener('resize', () => {
-        simulation.force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2));
-        simulation.alpha(1).restart();
+        const newWidth = window.innerWidth;
+        const newColumnWidth = newWidth / numberTypes.length;
+        
+        numbers.forEach(d => {
+            d.x = newColumnWidth * d.columnIndex + newColumnWidth/2;
+        });
+        
+        numberElements
+            .attr('x', d => d.x);
     });
 
     // Handle enter button click
