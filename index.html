@@ -12,8 +12,18 @@
     <div class="terminal-container">
         <!-- Landing Page -->
         <div id="landing-page" class="page active">
+            <div class="landing-header">
+                
+            </div>
+            
             <div id="floating-numbers"></div>
-            <button id="enter-chamber" class="glow-button">[ENTER ALIGNMENT CHAMBER]</button>
+            <div class="header-content">
+                <h1>KierAlign</h1>
+            </div>
+            <button id="enter-chamber" class="glow-button"><span>[ENTER ALIGNMENT CHAMBER]</span></button>
+            <div class="footer-content">
+                <h4>Sequence Alignment Visualization Terminal</h4>
+            </div>
         </div>
 
         <!-- Input Interface -->
@@ -21,7 +31,7 @@
             <div class="terminal-header">
                 <h1>KierAlign Terminal</h1>
                 <div class="terminal-controls">
-                    <span class="control-dot red"></span>
+                    <span id="back-to-main" class="control-dot red"></span>
                     <span class="control-dot yellow"></span>
                     <span class="control-dot green"></span>
                 </div>
@@ -57,20 +67,23 @@
             <div class="terminal-header">
                 <h1>Alignment Matrix</h1>
                 <div class="terminal-controls">
-                    <span class="control-dot red"></span>
+                    <span id="back-to-main-viz" class="control-dot red"></span>
                     <span class="control-dot yellow"></span>
                     <span class="control-dot green"></span>
                 </div>
             </div>
             <div id="matrix-container"></div>
             <div id="alignment-result"></div>
-            <button id="reset-terminal" class="glow-button">[RESET TERMINAL]</button>
+            <!-- <button id="reset-terminal" class="glow-button">[RESET TERMINAL]</button> -->
         </div>
     </div>
 
+    <script src="js/terminal-controls.js"></script>
     <script src="js/landing.js"></script>
     <script src="js/input.js"></script>
     <script src="js/visualization.js"></script>
     <script src="js/needleman-wunsch.js"></script>
+    <script src="js/matrix-visualization.js"></script>
+    <script src="js/sequence-animation.js"></script>
 </body>
 </html> 
