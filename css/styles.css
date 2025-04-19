@@ -1,8 +1,8 @@
 :root {
-    --primary-bg: #063F3E;
+    --primary-bg: #02090C;
     --highlight-green: #6AD2A0;
     --highlight-amber: #F3AE49;
-    --text-color: #E0E0E0;
+    --text-color: white;
     --terminal-border: #2A4A49;
 }
 
@@ -15,6 +15,7 @@
 body {
     font-family: 'IBM Plex Mono', monospace;
     background-color: var(--primary-bg);
+    background-image: url("https://transparenttextures.com/patterns/3px-tile.png");
     color: var(--text-color);
     min-height: 100vh;
     overflow: hidden;
