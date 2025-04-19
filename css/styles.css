@@ -49,9 +49,12 @@ body {
 /* Landing Page Styles */
 #floating-numbers {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     pointer-events: auto;
+    z-index: 1;
 }
 
 .glow-button {
@@ -95,7 +98,17 @@ body {
     border-radius: 50%;
 }
 
-.control-dot.red { background-color: #FF5F56; }
+.control-dot.red {
+    background-color: #FF5F56;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-dot.red:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px #FF5F56;
+}
+
 .control-dot.yellow { background-color: #FFBD2E; }
 .control-dot.green { background-color: #27C93F; }
 
@@ -179,4 +192,37 @@ body {
         padding: 0.8rem 1.5rem;
         font-size: 1rem;
     }
+}
+
+/* Landing Page Header and Footer */
+.landing-header {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 60px; /* Position directly above the button */
+}
+
+.header-content {
+    text-align: center;
+    color: var(--text-color);
+    font-family: 'IBM Plex Mono', monospace;
+    position: relative;
+    z-index: 11;
+}
+
+.header-content h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--highlight-green);
+}
+
+.header-content p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+#enter-chamber {
+    position: relative;
+    z-index: 2;
 } 
