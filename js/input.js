@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const alignButton = document.getElementById('align-sequences');
     const resetButton = document.getElementById('reset-terminal');
+    const sequenceAInput = document.getElementById('sequenceA');
+    const sequenceBInput = document.getElementById('sequenceB');
+    const matchScoreInput = document.getElementById('matchScore');
+    const mismatchScoreInput = document.getElementById('mismatchScore');
+    const gapScoreInput = document.getElementById('gapScore');
     
     // Handle align button click
     alignButton.addEventListener('click', () => {
-        const sequenceA = document.getElementById('sequenceA').value.toUpperCase();
-        const sequenceB = document.getElementById('sequenceB').value.toUpperCase();
-        const matchScore = parseInt(document.getElementById('matchScore').value);
-        const mismatchScore = parseInt(document.getElementById('mismatchScore').value);
-        const gapScore = parseInt(document.getElementById('gapScore').value);
+        const sequenceA = sequenceAInput.value.toUpperCase();
+        const sequenceB = sequenceBInput.value.toUpperCase();
+        const matchScore = parseInt(matchScoreInput.value);
+        const mismatchScore = parseInt(mismatchScoreInput.value);
+        const gapScore = parseInt(gapScoreInput.value);
 
         // Validate inputs
         if (!sequenceA || !sequenceB) {
@@ -30,24 +35,30 @@ document.addEventListener('DOMContentLoaded', () => {
             gapScore
         };
 
-        // Switch to visualization page
+        // Clear floating numbers
+        const floatingNumbers = document.getElementById('floating-numbers');
+        if (floatingNumbers) {
+            floatingNumbers.innerHTML = '';
+        }
+
+        // Hide input page and show visualization page
         document.getElementById('input-page').classList.remove('active');
         document.getElementById('visualization-page').classList.add('active');
 
-        // Initialize visualization
-        if (window.initializeVisualization) {
-            window.initializeVisualization();
-        }
+        // Animate the sequences
+        animateSequences(sequenceA, sequenceB);
+
+        // TODO: Add matrix calculation and visualization after sequence animation
     });
 
     // Handle reset button click
     resetButton.addEventListener('click', () => {
         // Clear all inputs
-        document.getElementById('sequenceA').value = '';
-        document.getElementById('sequenceB').value = '';
-        document.getElementById('matchScore').value = '1';
-        document.getElementById('mismatchScore').value = '-1';
-        document.getElementById('gapScore').value = '-2';
+        sequenceAInput.value = '';
+        sequenceBInput.value = '';
+        matchScoreInput.value = '1';
+        mismatchScoreInput.value = '-1';
+        gapScoreInput.value = '-2';
 
         // Clear visualization
         const matrixContainer = document.getElementById('matrix-container');

@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .attr('y', d => d.y)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
-        .attr('fill', '#4A90E2')
+        .attr('fill', '#EAFEFC')
         .style('font-family', 'IBM Plex Mono')
         .style('font-size', '24px')
         .style('opacity', 0.7)
