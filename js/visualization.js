@@ -7,18 +7,21 @@ window.initializeVisualization = function() {
     matrixContainer.html('');
 
     // Add audio context for subtle beeps
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!window.audioContext) {
+        window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
     
     const playBeep = () => {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+        if (!window.audioContext) return;
+        const oscillator = window.audioContext.createOscillator();
+        const gainNode = window.audioContext.createGain();
         oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        gainNode.connect(window.audioContext.destination);
         oscillator.frequency.value = 440;
         gainNode.gain.value = 0.1;
         oscillator.start();
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.1);
-        oscillator.stop(audioContext.currentTime + 0.1);
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, window.audioContext.currentTime + 0.1);
+        oscillator.stop(window.audioContext.currentTime + 0.1);
     };
 
     const margin = { top: 80, right: 50, bottom: 50, left: 80 };

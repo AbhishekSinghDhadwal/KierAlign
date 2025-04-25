@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('visualization-page').classList.add('active');
 
         // Animate the sequences
-        animateSequences(sequenceA, sequenceB);
+        animateSequences(sequenceA, sequenceB, matchScore, mismatchScore, gapScore);
 
         // TODO: Add matrix calculation and visualization after sequence animation
     });

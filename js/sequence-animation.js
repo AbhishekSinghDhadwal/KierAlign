@@ -154,6 +154,9 @@ class SequenceAnimation {
     }
 
     createControls() {
+        // Remove stale control bar if it already exists
+        document.querySelectorAll('.sequence-controls').forEach(el => el.remove());
+
         // Create controls container
         const controls = document.createElement('div');
         controls.className = 'sequence-controls';
@@ -384,7 +387,7 @@ class SequenceAnimation {
 }
 
 // Function to animate the sequences
-function animateSequences(sequenceA, sequenceB) {
+function animateSequences(sequenceA, sequenceB, matchScore, mismatchScore, gapScore) {
     // Clear any existing content in the matrix container
     const container = document.getElementById('matrix-container');
     if (!container) {
@@ -406,9 +409,9 @@ function animateSequences(sequenceA, sequenceB) {
         containerId: 'matrix-container',
         sequenceA: sequenceA,
         sequenceB: sequenceB,
-        matchScore: 1,
-        mismatchScore: -1,
-        gapScore: -2,
+        matchScore: matchScore,
+        mismatchScore: mismatchScore,
+        gapScore: gapScore,
         animationSpeed: 1000
     });
 
