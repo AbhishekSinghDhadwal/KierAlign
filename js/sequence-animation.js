@@ -88,6 +88,17 @@ class SequenceAnimation {
 
         this.matrixVis.initialize();
         this.generateSteps();
+
+        // Build quick lookup: "i,j"  ->  {diagonal,up,left}
+        this.scoreMap = {};
+        this.steps.forEach(s => {
+            if (s.position && s.scores) {
+                const key = s.position.join(',');
+                this.scoreMap[key] = s.scores;
+            }
+        });
+
+        this.attachTooltipEvents();
         this.createControls();
         
         // Start with blinking ellipsis
@@ -226,8 +237,24 @@ class SequenceAnimation {
             logContainer.innerHTML = '';
         }
         
+        // Remove any existing tooltip
+        const tooltip = document.querySelector('.crt-tooltip');
+        if (tooltip) {
+            tooltip.remove();
+        }
+        
         // Reset the matrix visualization
         this.matrixVis.initialize();
+        
+        // Rebuild score map and reattach tooltip events
+        this.scoreMap = {};
+        this.steps.forEach(s => {
+            if (s.position && s.scores) {
+                const key = s.position.join(',');
+                this.scoreMap[key] = s.scores;
+            }
+        });
+        this.attachTooltipEvents();
         
         // Start with blinking ellipsis
         this.startBlinkingEllipsis();
@@ -383,6 +410,44 @@ class SequenceAnimation {
         };
         
         typeNextChar();
+    }
+
+    attachTooltipEvents() {
+        // Remove any existing tooltip first
+        const existingTip = document.querySelector('.crt-tooltip');
+        if (existingTip) {
+            existingTip.remove();
+        }
+
+        // Create new tooltip element
+        const tip = document.createElement('div');
+        tip.className = 'crt-tooltip';
+        document.body.appendChild(tip);
+
+        const cells = this.matrixVis.svg.selectAll('rect');
+
+        const showTip = (event, d) => {
+            const rect = d3.select(event.target);
+            const i = rect.attr('data-i');
+            const j = rect.attr('data-j');
+            const key = `${i},${j}`;
+            const scores = this.scoreMap[key];
+            if (!scores) return;   // header cells, etc.
+
+            tip.textContent =
+                `diag: ${scores.diagonal}\nup:   ${scores.up}\nleft: ${scores.left}`;
+            tip.style.left = event.clientX + 12 + 'px';
+            tip.style.top  = event.clientY + 12 + 'px';
+            tip.style.opacity = '1';
+        };
+
+        const hideTip = () => {
+            tip.style.opacity = '0';
+        };
+
+        cells.on('mouseover', showTip)
+             .on('mousemove', showTip)
+             .on('mouseout',  hideTip);
     }
 }
 

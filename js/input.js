@@ -7,6 +7,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const mismatchScoreInput = document.getElementById('mismatchScore');
     const gapScoreInput = document.getElementById('gapScore');
     
+    // Validation helpers
+    const validateSequence = (seq) => {
+        const validSeqRegex = /^[a-zA-Z]+$/;
+        return validSeqRegex.test(seq);
+    };
+
+    const validateScore = (score) => {
+        return !isNaN(score) && score !== '';
+    };
+
+    const showToast = (message) => {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    };
+
+    const validateForm = () => {
+        const sequenceA = document.getElementById('sequenceA').value.trim();
+        const sequenceB = document.getElementById('sequenceB').value.trim();
+        const matchScore = document.getElementById('matchScore').value;
+        const mismatchScore = document.getElementById('mismatchScore').value;
+        const gapScore = document.getElementById('gapScore').value;
+        const alignButton = document.getElementById('align-sequences');
+
+        let isValid = true;
+        let errorMessage = '';
+
+        // Validate sequences
+        if (!validateSequence(sequenceA)) {
+            isValid = false;
+            errorMessage = 'Sequence A must contain only letters';
+        } else if (!validateSequence(sequenceB)) {
+            isValid = false;
+            errorMessage = 'Sequence B must contain only letters';
+        }
+        // Validate scores
+        else if (!validateScore(matchScore)) {
+            isValid = false;
+            errorMessage = 'Match score must be a number';
+        } else if (!validateScore(mismatchScore)) {
+            isValid = false;
+            errorMessage = 'Mismatch score must be a number';
+        } else if (!validateScore(gapScore)) {
+            isValid = false;
+            errorMessage = 'Gap score must be a number';
+        }
+
+        // Update button state and show error if needed
+        alignButton.disabled = !isValid;
+        if (!isValid && errorMessage) {
+            showToast(errorMessage);
+        }
+
+        return isValid;
+    };
+
     // Handle align button click
     alignButton.addEventListener('click', () => {
         const sequenceA = sequenceAInput.value.toUpperCase();
@@ -16,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const gapScore = parseInt(gapScoreInput.value);
 
         // Validate inputs
-        if (!sequenceA || !sequenceB) {
-            alert('Please enter both sequences');
+        if (!validateForm()) {
+            showToast('SYNTAX ERR :: INVALID SEQUENCE OR EMPTY SCORE');
             return;
         }
 
@@ -42,8 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Animate the sequences
         animateSequences(sequenceA, sequenceB, matchScore, mismatchScore, gapScore);
-
-        // TODO: Add matrix calculation and visualization after sequence animation
     });
 
     // Handle reset button click
@@ -66,11 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('input-page').classList.add('active');
     });
 
-    // Add input formatting (just uppercase conversion)
-    const sequenceInputs = document.querySelectorAll('#sequenceA, #sequenceB');
-    sequenceInputs.forEach(input => {
-        input.addEventListener('input', (e) => {
-            e.target.value = e.target.value.toUpperCase();
-        });
-    });
+    // Add event listeners for validation
+    document.getElementById('sequenceA').addEventListener('input', validateForm);
+    document.getElementById('sequenceB').addEventListener('input', validateForm);
+    document.getElementById('matchScore').addEventListener('input', validateForm);
+    document.getElementById('mismatchScore').addEventListener('input', validateForm);
+    document.getElementById('gapScore').addEventListener('input', validateForm);
+
+    // Initial validation
+    validateForm();
 }); 

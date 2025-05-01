@@ -65,6 +65,8 @@ class MatrixVisualization {
                 
                 // Draw cell rectangle
                 const cell = this.svg.append('rect')
+                    .attr('data-i', i)
+                    .attr('data-j', j)
                     .attr('x', x)
                     .attr('y', y)
                     .attr('width', this.cellSize)
@@ -173,6 +175,8 @@ class MatrixVisualization {
                 
                 // Draw cell rectangle
                 this.svg.append('rect')
+                    .attr('data-i', i)
+                    .attr('data-j', j)
                     .attr('x', x)
                     .attr('y', y)
                     .attr('width', this.cellSize)

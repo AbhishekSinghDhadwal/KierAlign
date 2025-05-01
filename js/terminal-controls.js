@@ -41,9 +41,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Remove any control buttons that might have been added
-        // Remove individual buttons (legacy) *and* the bar container
         document.querySelectorAll('.control-button, .speed-control, .reset-button, .sequence-controls')
             .forEach(el => el.remove());
+
+        // Reset input page state
+        const sequenceAInput = document.getElementById('sequenceA');
+        const sequenceBInput = document.getElementById('sequenceB');
+        const matchScoreInput = document.getElementById('matchScore');
+        const mismatchScoreInput = document.getElementById('mismatchScore');
+        const gapScoreInput = document.getElementById('gapScore');
+        const alignButton = document.getElementById('align-sequences');
+
+        if (sequenceAInput) sequenceAInput.value = '';
+        if (sequenceBInput) sequenceBInput.value = '';
+        if (matchScoreInput) matchScoreInput.value = '1';
+        if (mismatchScoreInput) mismatchScoreInput.value = '-1';
+        if (gapScoreInput) gapScoreInput.value = '-2';
+        if (alignButton) alignButton.disabled = true;
 
         // Reset any global variables
         window.alignmentData = null;

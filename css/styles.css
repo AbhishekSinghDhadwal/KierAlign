@@ -290,4 +290,37 @@ body {
 #enter-chamber {
     position: relative;
     z-index: 2;
+}
+
+/* === CRT tooltip ==================================================== */
+.crt-tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: rgba(2, 9, 12, 0.95);
+    border: 1px solid var(--highlight-green);
+    padding: 6px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--highlight-green);
+    z-index: 9999;
+    white-space: pre;
+    box-shadow: 0 0 8px var(--highlight-green);
+}
+
+/* === CRT toast error ============================================== */
+#crt-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(2, 9, 12, 0.95);
+    border: 1px solid #F3AE49;
+    padding: 10px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    color: #F3AE49;
+    box-shadow: 0 0 10px #F3AE49;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
 } 
