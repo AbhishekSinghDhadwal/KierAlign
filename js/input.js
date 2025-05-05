@@ -18,11 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const showToast = (message) => {
+        // Remove any existing toasts
+        const existingToasts = document.querySelectorAll('.toast');
+        existingToasts.forEach(toast => toast.remove());
+
+        // Create new toast
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.textContent = message;
+        
+        // Add to document
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
     };
 
     const validateForm = () => {
@@ -57,8 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update button state and show error if needed
-        alignButton.disabled = !isValid;
+        //alignButton.disabled = !isValid;
         if (!isValid && errorMessage) {
+            console.log(errorMessage + " :: " + isValid);
             showToast(errorMessage);
         }
 

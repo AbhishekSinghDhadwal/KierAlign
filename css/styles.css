@@ -323,4 +323,44 @@ body {
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 10000;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(2, 9, 12, 0.95);
+    border: 1px solid var(--highlight-amber);
+    color: var(--highlight-amber);
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    z-index: 1000;
+    animation: slideInCenter 0.3s ease-out, fadeOut 0.3s ease-in 2.7s;
+    box-shadow: 0 0 10px rgba(243, 174, 73, 0.3);
+    text-align: center;
+    min-width: 200px;
+}
+
+@keyframes slideInCenter {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 } 

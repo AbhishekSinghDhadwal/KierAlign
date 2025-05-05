@@ -1,4 +1,4 @@
-window.initializeVisualization = function() {
+window.initializeMatrixVisualization = function() {
     const { sequenceA, sequenceB, matchScore, mismatchScore, gapScore } = window.alignmentData;
     const nw = new NeedlemanWunsch(sequenceA, sequenceB, matchScore, mismatchScore, gapScore);
     const result = nw.calculate();
@@ -7,21 +7,23 @@ window.initializeVisualization = function() {
     matrixContainer.html('');
 
     // Add audio context for subtle beeps
-    if (!window.audioContext) {
-        window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!window.AudioContext) {
+        window.AudioContext = new (window.AudioContext || window.AudioContext)();
+        console.log("AudioContext created");
+        window.AudioContext.resume();
     }
     
     const playBeep = () => {
-        if (!window.audioContext) return;
-        const oscillator = window.audioContext.createOscillator();
-        const gainNode = window.audioContext.createGain();
+        if (!window.AudioContext) return;
+        const oscillator = window.AudioContext.createOscillator();
+        const gainNode = window.AudioContext.createGain();
         oscillator.connect(gainNode);
-        gainNode.connect(window.audioContext.destination);
-        oscillator.frequency.value = 440;
-        gainNode.gain.value = 0.1;
+        gainNode.connect(window.AudioContext.destination);
+        oscillator.frequency.value = 880; // Higher frequency
+        gainNode.gain.value = 0.2; // Slightly louder
         oscillator.start();
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, window.audioContext.currentTime + 0.1);
-        oscillator.stop(window.audioContext.currentTime + 0.1);
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, window.AudioContext.currentTime + 0.1);
+        oscillator.stop(window.AudioContext.currentTime + 0.1);
     };
 
     const margin = { top: 80, right: 50, bottom: 50, left: 80 };

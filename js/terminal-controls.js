@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Close audio context if it exists
-        if (window.audioContext) {
-            window.audioContext.close();
-            window.audioContext = null;
+        if (window.AudioContext) {
+            window.AudioContext.close();
+            window.AudioContext = null;
         }
         
         // Clear any remaining timers
@@ -57,7 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (matchScoreInput) matchScoreInput.value = '1';
         if (mismatchScoreInput) mismatchScoreInput.value = '-1';
         if (gapScoreInput) gapScoreInput.value = '-2';
-        if (alignButton) alignButton.disabled = true;
+        if (alignButton) {
+            alignButton.disabled = false; // Enable the align button
+            // Trigger validation to ensure proper state
+            if (typeof validateForm === 'function') {
+                validateForm();
+            }
+        }
 
         // Reset any global variables
         window.alignmentData = null;

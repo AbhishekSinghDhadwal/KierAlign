@@ -1,1 +1,0 @@
-const controlButtons = document.querySelectorAll('.control-button, .speed-control, .reset-button, .sequence-controls'); 
