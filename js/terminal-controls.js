@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Close audio context if it exists
-        if (window.AudioContext) {
-            window.AudioContext.close();
-            window.AudioContext = null;
+        if (window.audioContext) {
+            window.audioContext.close();
+            window.audioContext = null;
         }
         
         // Clear any remaining timers

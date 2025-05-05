@@ -82,7 +82,7 @@ class SequenceAnimation {
             containerWidth: 800,
             containerHeight: 600,
             textColor: "#E0FBFF",
-            matchColor: "#ff6b6b",
+            matchColor: "#6AD2A0",
             strokeColor: "#E0FBFF"
         });
 
@@ -171,7 +171,7 @@ class SequenceAnimation {
         // Create controls container
         const controls = document.createElement('div');
         controls.className = 'sequence-controls';
-        controls.style.cssText = 'display: flex; gap: 10px; align-items: center; margin-top: 20px; justify-content: center; position: absolute; bottom: 20px; left: 0; right: 0; z-index: 100;';
+        controls.style.cssText = 'display: flex; gap: 10px; align-items: center; margin-top: 5px; justify-content: center; position: absolute; bottom: 40px; left: 0; right: 0; z-index: 100;';
         
         // Create terminal-style play/pause button (left)
         const playBtn = document.createElement('button');
@@ -361,7 +361,7 @@ class SequenceAnimation {
             // Highlight current cell
             const cell = this.matrixVis.cells[i * (this.sequenceB.length + 1) + j];
             if (cell) {
-                cell.rect.style('fill', step.type === 'match' ? 'rgba(255, 107, 107, 0.4)' : 'rgba(255, 107, 107, 0.2)');
+                cell.rect.style('fill', step.type === 'match' ? 'rgba(106, 210, 160, 0.4)' : 'rgba(106, 210, 160, 0.2)');
             }
         }
         
