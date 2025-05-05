@@ -1,3 +1,14 @@
+// Add this at the top of the file to ensure audioContext is resumed on user gesture
+if (typeof window.audioContext === 'undefined') {
+    window.audioContext = null;
+}
+
+document.body.addEventListener('click', () => {
+    if (window.audioContext && window.audioContext.state === 'suspended') {
+        window.audioContext.resume();
+    }
+});
+
 window.initializeMatrixVisualization = function() {
     const { sequenceA, sequenceB, matchScore, mismatchScore, gapScore } = window.alignmentData;
     const nw = new NeedlemanWunsch(sequenceA, sequenceB, matchScore, mismatchScore, gapScore);
@@ -6,24 +17,26 @@ window.initializeMatrixVisualization = function() {
     const matrixContainer = d3.select('#matrix-container');
     matrixContainer.html('');
 
-    // Add audio context for subtle beeps
-    if (!window.AudioContext) {
-        window.AudioContext = new (window.AudioContext || window.AudioContext)();
-        console.log("AudioContext created");
-        window.AudioContext.resume();
+    // Add audio context for subtle beeps (only after user gesture)
+    if (!window.audioContext) {
+        window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     }
     
     const playBeep = () => {
-        if (!window.AudioContext) return;
-        const oscillator = window.AudioContext.createOscillator();
-        const gainNode = window.AudioContext.createGain();
+        if (!window.audioContext) return;
+        console.log('playBeep called, state:', window.audioContext.state);
+        if (window.audioContext.state === 'suspended') {
+            window.audioContext.resume();
+        }
+        const oscillator = window.audioContext.createOscillator();
+        const gainNode = window.audioContext.createGain();
         oscillator.connect(gainNode);
-        gainNode.connect(window.AudioContext.destination);
+        gainNode.connect(window.audioContext.destination);
         oscillator.frequency.value = 880; // Higher frequency
-        gainNode.gain.value = 0.2; // Slightly louder
+        gainNode.gain.value = 0.5; // Louder
         oscillator.start();
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, window.AudioContext.currentTime + 0.1);
-        oscillator.stop(window.AudioContext.currentTime + 0.1);
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, window.audioContext.currentTime + 0.3);
+        oscillator.stop(window.audioContext.currentTime + 0.3);
     };
 
     const margin = { top: 80, right: 50, bottom: 50, left: 80 };

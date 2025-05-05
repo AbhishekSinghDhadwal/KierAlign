@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const alignButton = document.getElementById('align-sequences');
-    const resetButton = document.getElementById('reset-terminal');
     const sequenceAInput = document.getElementById('sequenceA');
     const sequenceBInput = document.getElementById('sequenceB');
     const matchScoreInput = document.getElementById('matchScore');
@@ -114,26 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
         animateSequences(sequenceA, sequenceB, matchScore, mismatchScore, gapScore);
     });
 
-    // Handle reset button click
-    resetButton.addEventListener('click', () => {
-        // Clear all inputs
-        sequenceAInput.value = '';
-        sequenceBInput.value = '';
-        matchScoreInput.value = '1';
-        mismatchScoreInput.value = '-1';
-        gapScoreInput.value = '-2';
-
-        // Clear visualization
-        const matrixContainer = document.getElementById('matrix-container');
-        matrixContainer.innerHTML = '';
-        const alignmentResult = document.getElementById('alignment-result');
-        alignmentResult.innerHTML = '';
-
-        // Switch back to input page
-        document.getElementById('visualization-page').classList.remove('active');
-        document.getElementById('input-page').classList.add('active');
-    });
-
     // Add event listeners for validation
     document.getElementById('sequenceA').addEventListener('input', validateForm);
     document.getElementById('sequenceB').addEventListener('input', validateForm);
@@ -142,5 +121,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('gapScore').addEventListener('input', validateForm);
 
     // Initial validation
-    validateForm();
+    //validateForm();
 }); 
