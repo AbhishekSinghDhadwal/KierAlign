@@ -1,5 +1,7 @@
 # KierAlign
 
+![KierAlign Demo](kieralign.gif)
+
 KierAlign is an interactive, web-based educational visualization tool designed to teach and demonstrate the Needleman-Wunsch algorithm, a foundational sequence alignment method widely used in bioinformatics. The application features a visually engaging interface inspired by the "Lumon Terminal Pro" from the Apple TV+ show Severance.
 
 ## Features

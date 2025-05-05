@@ -114,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add event listeners for validation
-    document.getElementById('sequenceA').addEventListener('input', validateForm);
-    document.getElementById('sequenceB').addEventListener('input', validateForm);
-    document.getElementById('matchScore').addEventListener('input', validateForm);
-    document.getElementById('mismatchScore').addEventListener('input', validateForm);
-    document.getElementById('gapScore').addEventListener('input', validateForm);
+    // document.getElementById('sequenceA').addEventListener('input', validateForm);
+    // document.getElementById('sequenceB').addEventListener('input', validateForm);
+    // document.getElementById('matchScore').addEventListener('input', validateForm);
+    // document.getElementById('mismatchScore').addEventListener('input', validateForm);
+    // document.getElementById('gapScore').addEventListener('input', validateForm);
 
     // Initial validation
     //validateForm();
